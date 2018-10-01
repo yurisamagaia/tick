@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Estacionamento</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let iten of estacionamento" #item>
+      <ion-item (click)="editar(iten.id)">
+        <h2>{{iten.nome}}</h2>
+        <p>R$ {{iten.valor}}</p>
+        <p *ngIf="iten.ativo === 'true'" class="habilitado">Habilitado</p>
+        <p *ngIf="iten.ativo === 'false' || iten.ativo === null" class="desabilitado">Desabilitado</p>
+      </ion-item>
+      <ion-item-options side="left" (ionSwipe)="atualizar(item, iten.id, iten.ativo)">
+        <button ion-button color="danger" expandable *ngIf="iten.ativo === 'false' || iten.ativo === null"></button>
+        <button ion-button color="secondary" expandable *ngIf="iten.ativo === 'true'"></button>
+      </ion-item-options>
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="deletar(iten.id)">
+          <ion-icon name="trash"></ion-icon>
+          Remover
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-fab right bottom padding>
+    <button ion-fab color="secondary" (click)="adicionar()"><ion-icon name="add" style="zoom:2.0;"></ion-icon></button>
+  </ion-fab>
+</ion-content>
