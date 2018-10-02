@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 
 import { HomePage } from '../pages/home/home';
+import { ProdutoPage } from '../pages/produto/produto';
 import { EstacionamentoPage } from '../pages/estacionamento/estacionamento';
 import { ConfiguracaoPage } from '../pages/configuracao/configuracao';
 
@@ -24,6 +25,7 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
+      { title: 'Podutos', component: ProdutoPage },
       { title: 'Estacionamento', component: EstacionamentoPage },
       { title: 'Configurações', component: ConfiguracaoPage }
     ];
@@ -52,6 +54,7 @@ export class MyApp {
       location: 'default'
     }).then((db: SQLiteObject) => {
       //db.executeSql('DROP TABLE IF EXISTS estacionamento', <any>{}).then(res => console.log('Tabela Deletada')).catch(e => console.log(e));
+      db.executeSql("CREATE TABLE IF NOT EXISTS produto(id INTEGER PRIMARY KEY, nome TEXT, valor NUMERIC, quantidade INTEGER, ativo TEXT)", <any>{}).then(res => console.log('Tabela criada')).catch(e => console.log(e));
       db.executeSql("CREATE TABLE IF NOT EXISTS estacionamento(id INTEGER PRIMARY KEY, nome TEXT, valor NUMERIC, ativo TEXT)", <any>{}).then(res => console.log('Tabela criada')).catch(e => console.log(e));
       db.executeSql("CREATE TABLE IF NOT EXISTS configuracao(id INTEGER PRIMARY KEY, evento TEXT, impressao_ticket TEXT, segunda_via TEXT, placa TEXT, observacoes TEXT, operador TEXT, vendas TEXT, estacionamento TEXT, totais TEXT, dinheiro TEXT, cartao TEXT, senha_adm TEXT, senha_root TEXT)", <any>{}).then(res => console.log('Tabela criada')).catch(e => console.log(e));
     }).catch(e => {

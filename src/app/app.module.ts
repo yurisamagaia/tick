@@ -13,7 +13,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { SQLite } from '@ionic-native/sqlite';
 import { ControllerProvider } from '../providers/controller/controller';
 
-
 @NgModule({
   declarations: [
     MyApp,
