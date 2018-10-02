@@ -1,18 +1,35 @@
-<!--
-  Generated template for the ProdutoPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>produto</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
-</ion-content>
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>Produtos</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-list>
+      <ion-item-sliding *ngFor="let iten of produto" #item>
+        <ion-item (click)="editar(iten.id)">
+          <h1>{{iten.nome}}</h1>
+          <h2>R$ {{iten.valor}}</h2>
+          <p *ngIf="iten.ativo === 'true'" class="habilitado">Habilitado</p>
+          <p *ngIf="iten.ativo === 'false' || iten.ativo === null" class="desabilitado">Desabilitado</p>
+        </ion-item>
+        <ion-item-options side="left" (ionSwipe)="atualizar(item, iten.id, iten.ativo)">
+          <button ion-button color="danger" expandable *ngIf="iten.ativo === 'false' || iten.ativo === null"></button>
+          <button ion-button color="secondary" expandable *ngIf="iten.ativo === 'true'"></button>
+        </ion-item-options>
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="deletar(iten.id)">
+            <ion-icon name="trash"></ion-icon>
+            Remover
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <ion-fab right bottom padding>
+      <button ion-fab color="secondary" (click)="adicionar()"><ion-icon name="add" style="zoom:2.0;"></ion-icon></button>
+    </ion-fab>
+  </ion-content>
+  

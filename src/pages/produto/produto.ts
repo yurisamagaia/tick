@@ -10,7 +10,7 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 })
 export class ProdutoPage {
 
-  venda: any = [];
+  produto: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sqlite: SQLite, private toastCtrl: ToastController, public events: Events) {
     events.subscribe('produto', () => {
@@ -28,15 +28,15 @@ export class ProdutoPage {
       location: 'default'
     }).then((db: SQLiteObject) => {
       db.executeSql('SELECT * FROM produto ORDER BY nome ASC', <any>{}).then(res => {
-        this.venda = [];
+        this.produto = [];
         for(var i=0; i<res.rows.length; i++) {
-          this.venda.push({ id: res.rows.item(i).id, nome: res.rows.item(i).nome, valor: res.rows.item(i).valor, ativo: res.rows.item(i).ativo});
+          this.produto.push({ id: res.rows.item(i).id, nome: res.rows.item(i).nome, valor: res.rows.item(i).valor, quantidade: res.rows.item(i).quantidade, ativo: res.rows.item(i).ativo});
         }
       }).catch(e => {
-        this.alerta(e);
+        this.alerta(JSON.stringify(e));
       });
     }).catch(e => {
-      this.alerta(e);
+      this.alerta(JSON.stringify(e));
     });
   }
 
@@ -50,10 +50,10 @@ export class ProdutoPage {
         this.events.publish('produto');
         this.alerta('Registro atualizado com sucesso');
       }).catch(e => {
-        this.alerta(e);
+        this.alerta(JSON.stringify(e));
       });
     }).catch(e => {
-      this.alerta(e);
+      this.alerta(JSON.stringify(e));
     });
   }
 
@@ -66,10 +66,10 @@ export class ProdutoPage {
         this.events.publish('produto');
         this.alerta('Registro deletado com sucesso');
       }).catch(e => {
-        this.alerta(e);
+        this.alerta(JSON.stringify(e));
       });
     }).catch(e => {
-      this.alerta(e);
+      this.alerta(JSON.stringify(e));
     });
   }
 
@@ -89,4 +89,4 @@ export class ProdutoPage {
     });
     toast.present();
   }
-  }
+}

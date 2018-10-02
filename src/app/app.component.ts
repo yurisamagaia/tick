@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, AlertController, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
@@ -17,25 +17,21 @@ export class MyApp {
 
   rootPage: any = HomePage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{title: string, component: any, icon: string, pass: boolean}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private sqlite: SQLite) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private sqlite: SQLite, private alertCtrl: AlertController, private toastCtrl: ToastController) {
     this.initializeApp();
 
-    // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'Podutos', component: ProdutoPage },
-      { title: 'Estacionamento', component: EstacionamentoPage },
-      { title: 'Configurações', component: ConfiguracaoPage }
+      { title: 'Home', component: HomePage, icon: 'home', pass: false },
+      { title: 'Produtos', component: ProdutoPage, icon: 'cart', pass: true },
+      { title: 'Estacionamento', component: EstacionamentoPage, icon: 'car', pass: true },
+      { title: 'Configurações', component: ConfiguracaoPage, icon: 'settings', pass: true }
     ];
-
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       this.tables();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
@@ -43,9 +39,62 @@ export class MyApp {
   }
 
   openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+
+    this.sqlite.create({
+      name: 'ticketdb.db',
+      location: 'default'
+    }).then((db: SQLiteObject) => {
+      db.executeSql('SELECT * FROM configuracao ORDER BY id DESC', []).then(res => {
+        if(res.rows.length > 0) {
+          if(page.pass === true) {
+            if((page.component === ConfiguracaoPage) || (page.component === ProdutoPage && res.rows.item(0).vendas === 'false') || (page.component === EstacionamentoPage && res.rows.item(0).estacionamento === 'false')) {
+              let alert = this.alertCtrl.create({
+                title: 'Senha de acesso',
+                inputs: [{
+                  name: 'senha',
+                  placeholder: 'Senha de acesso',
+                  type: 'password'
+                }],
+                buttons: [{
+                  text: 'Cancelar',
+                  role: 'cancel'
+                },{
+                  text: 'Confirmar',
+                  handler: data => {
+                    if(data.senha === res.rows.item(0).senha_adm || data.senha === res.rows.item(0).senha_root){
+                      this.nav.setRoot(page.component);
+                    }else{
+                      this.alerta('Senha não confere');
+                      this.openPage(page);
+                    }
+                  }
+                }]
+              });
+              alert.present();
+            }else{
+              this.nav.setRoot(page.component);
+            }
+          }else{
+            this.nav.setRoot(page.component);
+          }
+        }else{
+          this.alerta('Erro no BD, nenhum registro encontrado');
+        }
+      }).catch(e => {
+        this.alerta(JSON.stringify(e));
+      });
+    }).catch(e => {
+      this.alerta(JSON.stringify(e));
+    });
+  }
+
+  alerta(message) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
   }
 
   tables() {

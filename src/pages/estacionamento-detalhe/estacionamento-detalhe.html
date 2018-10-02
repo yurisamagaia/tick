@@ -5,24 +5,23 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="salvar()">
-    <ion-list>
-      <ion-item>
-        <ion-label fixed>Nome: </ion-label>
-        <ion-input type="text" [(ngModel)]="estacionamento.nome" name="nome" value="estacionamento.nome"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label fixed>Valor (R$): </ion-label>
-        <ion-input type="text" [(ngModel)]="estacionamento.valor" name="valor" value="estacionamento.valor"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Habilitado</ion-label>
-        <ion-toggle color="primary" [(ngModel)]="estacionamento.ativo" name="ativo" value="estacionamento.ativo"></ion-toggle>
-      </ion-item>
-    </ion-list>
-    <div padding-left padding-right padding-bottom>
-      <button ion-button block color="secondary" type="submit">SALVAR</button>
-    </div>
-  </form>
+  <ion-list>
+    <ion-item>
+      <ion-label fixed>Nome: </ion-label>
+      <ion-input type="text" [(ngModel)]="estacionamento.nome" name="nome" value="estacionamento.nome"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Valor (R$): </ion-label>
+      <ion-input type="text" [(ngModel)]="estacionamento.valor" name="valor" value="estacionamento.valor"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Habilitado</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="estacionamento.ativo" name="ativo" value="estacionamento.ativo"></ion-toggle>
+    </ion-item>
+  </ion-list>
 </ion-content>
-  
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button block color="secondary" type="button" (click)="salvar()">SALVAR</button>
+  </ion-toolbar>
+</ion-footer>

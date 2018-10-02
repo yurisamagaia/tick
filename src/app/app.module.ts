@@ -4,6 +4,8 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { ProdutoPage } from '../pages/produto/produto';
+import { ProdutoDetalhePage } from '../pages/produto-detalhe/produto-detalhe';
 import { EstacionamentoPage } from '../pages/estacionamento/estacionamento';
 import { EstacionamentoDetalhePage } from '../pages/estacionamento-detalhe/estacionamento-detalhe';
 import { ConfiguracaoPage } from '../pages/configuracao/configuracao';
@@ -17,6 +19,8 @@ import { ControllerProvider } from '../providers/controller/controller';
   declarations: [
     MyApp,
     HomePage,
+    ProdutoPage,
+    ProdutoDetalhePage,
     EstacionamentoPage,
     EstacionamentoDetalhePage,
     ConfiguracaoPage
@@ -29,6 +33,8 @@ import { ControllerProvider } from '../providers/controller/controller';
   entryComponents: [
     MyApp,
     HomePage,
+    ProdutoPage,
+    ProdutoDetalhePage,
     EstacionamentoPage,
     EstacionamentoDetalhePage,
     ConfiguracaoPage
